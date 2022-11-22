@@ -22,6 +22,9 @@ class MyApp extends StatelessWidget {
     ),
   ];
 
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
+
   MyApp({super.key});
 
   @override
@@ -34,15 +37,45 @@ class MyApp extends StatelessWidget {
           centerTitle: true,
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
               width: double.infinity,
               child: const Card(
                 color: Colors.blue,
-                child: Text('Chart!'),
                 elevation: 5,
+                child: Text('Chart!'),
+              ),
+            ),
+            Card(
+              elevation: 5,
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    TextField(
+                      decoration: const InputDecoration(labelText: 'Title'),
+                      controller: titleController,
+                      // onChanged: (value) => titleInput = value,
+                    ),
+                    TextField(
+                      decoration: const InputDecoration(labelText: 'Amount'),
+                      controller: amountController,
+                      // onChanged: (value) => amountInput = value,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        print(titleController);
+                        print(amountController);
+                      },
+                      style:
+                          TextButton.styleFrom(foregroundColor: Colors.purple),
+                      child: const Text('Add Transaction'),
+                    )
+                  ],
+                ),
               ),
             ),
             Column(
@@ -54,18 +87,18 @@ class MyApp extends StatelessWidget {
                         padding: const EdgeInsets.all(10),
                         margin: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 15),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.purple,
+                            width: 2,
+                          ),
+                        ),
                         child: Text(
                           '\$${e.amount}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                             color: Colors.purple,
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.purple,
-                            width: 2,
                           ),
                         ),
                       ),
