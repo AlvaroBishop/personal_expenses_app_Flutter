@@ -4,7 +4,7 @@ import 'package:personal_expenses_app/widgets/new_transaction.dart';
 import 'package:personal_expenses_app/widgets/transactions_list.dart';
 
 void main() {
-  runApp( const MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,10 +12,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+        ),
         title: 'Flutter App',
-        home: MyHomePage());
+        home: const MyHomePage());
   }
 }
 
@@ -66,35 +69,34 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter App'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context),
-          ),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            child: const Card(
-              color: Colors.blue,
-              elevation: 5,
-              child: Text('Chart!'),
+        appBar: AppBar(
+          title: const Text('Flutter App'),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () => _startAddNewTransaction(context),
             ),
-          ),
-          TransactionList(transaction: _userTransactions),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: IconButton(
-        icon: const Icon(Icons.add),
-        onPressed: () => _startAddNewTransaction(context),
-      ),
-    );
+          ],
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              child: Card(
+                color: Theme.of(context).primaryColor,
+                elevation: 5,
+                child: Text('Chart!'),
+              ),
+            ),
+            TransactionList(transaction: _userTransactions),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _startAddNewTransaction(context),
+          child: Icon(Icons.add),
+        ));
   }
 }
