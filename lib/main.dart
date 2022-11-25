@@ -4,12 +4,15 @@ import 'package:personal_expenses_app/widgets/new_transaction.dart';
 import 'package:personal_expenses_app/widgets/transactions_list.dart';
 
 void main() {
-  runApp(const MyHomePage());
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter App',
         home: MyHomePage());
