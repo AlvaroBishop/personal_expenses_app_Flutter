@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:personal_expenses_app/models/transaction.dart';
+import 'package:personal_expenses_app/widgets/chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
@@ -21,10 +22,17 @@ class Chart extends StatelessWidget {
         }
       }
       return {
-        'day': DateFormat.E().format(weekDay).substring(0, 1),
+        'day': DateFormat.E().format(weekDay).substring(0, 1).toString(),
         'amount': totalSum
       };
-    });
+    }).reversed.toList();
+  }
+
+  double get totalSpending {
+    return groupedTransactionValues.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue + (element['amount'] as double));
   }
 
   const Chart({super.key, required this.recentTransactions});
@@ -32,13 +40,26 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6,
-      margin: const EdgeInsets.all(20),
-      child: Row(
-        children: groupedTransactionValues
-            .map((e) => Text('${e['day']} : ${e['amount']} '))
-            .toList(),
-      ),
-    );
+        elevation: 6,
+        margin: const EdgeInsets.all(20),
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: groupedTransactionValues
+                .map(
+                  (e) => Flexible(
+                    fit: FlexFit.tight,
+                    child: ChartBar(
+                        label: e['day'] as String,
+                        spendingAmount: e['amount'] as double,
+                        spendingPctOfTotal: totalSpending == 0.0
+                            ? 0.0
+                            : (e['amount'] as double) / totalSpending),
+                  ),
+                )
+                .toList(),
+          ),
+        ));
   }
 }
