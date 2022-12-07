@@ -94,6 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
+
     final appBar = AppBar(
           title: const Text(
             'Personal Expenses',
@@ -107,12 +110,24 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         );
+
+    final txListWidget = Container(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              child: TransactionList(
+                transactions: _userTransactions,
+                deleteTransaction: _deleteTransaction,
+              ),
+            );
+
     return Scaffold(
         appBar: appBar,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
+            if(isLandscape) Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Show Chart'),
@@ -123,23 +138,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 },)
               ],
             ),
-            _showChart
-            ? Container(
-              height: (MediaQuery.of(context).size.height -
+            if(!isLandscape) Container(
+              height: (mediaQuery.size.height -
                       appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
+                      mediaQuery.padding.top) *
+                  0.3,
+                  child: Chart(recentTransactions: _recentTransactions)),
+            if(!isLandscape) txListWidget,
+            if( isLandscape ) _showChart
+            ? Container(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
                   0.7,
                   child: Chart(recentTransactions: _recentTransactions))
-            : Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.7,
-              child: TransactionList(
-                transactions: _userTransactions,
-                deleteTransaction: _deleteTransaction,
-              ),
-            ),
+            : txListWidget
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
